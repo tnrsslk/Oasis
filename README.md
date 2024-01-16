@@ -20,12 +20,14 @@ py -m venv venv
  8. go live with [localhost:8000](http://localhost:8000/)
  
 
- 
- ## To add new products and access admin panel 
- 1. run on trimnal 
+
+
+
  ```
  py manage.py createsuperuser
  ```
+ ## To add new products and access admin panel 
+ 1. run on trimnal 
  2. create new admin user
  2. go to [localhost:8000/admin](http://localhost:8000/admin)
 
