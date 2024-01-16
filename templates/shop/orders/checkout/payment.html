@@ -1,0 +1,141 @@
+{% extends '../../../base.html' %}
+{% load static %}
+{% block title %}Payment{% endblock title %}
+{% block content %}
+
+<style>
+  button {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      background-color: #6896BD; 
+      color: white; 
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+  }
+</style>
+
+
+
+<!-- pages-title-start -->
+<div class="pages-title section-padding">
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="pages-title-text text-center">
+          <h2 style="color:#6896BD">Payment</h2>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- pages-title-end -->
+<!-- Checkout content section start -->
+<section style="margin-bottom:50;background:#ffffff" class="pages checkout section-padding">
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12 col-sm-6">
+        <div style="border-radius:20px; background:#6896BD;" class="padding60">
+          
+          <div class="log-title text-center">
+            <h2><strong style="color:#ffffff">Billing Address</strong></h2><br>
+          </div>
+          <div class="cart-form-text pay-details table-responsive text-center">
+            <table class="tablee" style="width:100%" >
+              <thead>
+                
+              </thead>
+              <tbody style="color:#ffffff;">
+                
+                <tr>
+                  <th style="font-size:15px">Name</th>
+                  <td style="font-size:15px">{{order.full_name}}</td>
+                </tr>
+                <tr>
+                  <th style="font-size:15px">Email</th>
+                  <td style="font-size:15px">{{order.email}}</td>
+                </tr>
+                <tr>
+                  <th style="font-size:15px">Phone Number</th>
+                  <td style="font-size:15px">{{order.phone}}</td>
+                </tr>
+                <tr>
+                  <th style="font-size:15px">Address</th>
+                  <td style="font-size:15px">{{order.address}}</td>
+                </tr>
+                <tr>
+                  <th style="font-size:15px">City</th>
+                  <td style="font-size:15px">{{order.city}}</td>
+                </tr>
+                <tr>
+                  <th style="font-size:15px">Country</th>
+                  <td style="font-size:15px">{{order.country}}</td>
+                </tr>
+                {% if order.order_note %}
+                <tr>
+                  <th style="font-size:15px">Order Note</th>
+                  <td style="font-size:15px">{{order.order_note}}</td>
+                </tr>
+                {% endif %}
+              </tbody>
+              <br>
+            </table><br><br>
+            <div class="log-title text-center">
+              <h2><strong style="color:#ffffff">Payment Method</strong></h2><br>
+            </div>
+          <h3 style="font-size:15px; margin-left:30px; color:#ffffff" class="floatleft">Pay on Delivery</h3><br><br>
+          </div>
+        </div><br>
+      </div>
+      <div class="col-xs-12 col-sm-6">
+        <div style="border-radius:20px; background:#6896BD;" class="padding60">
+          <div class="log-title text-center">
+            <h2><strong style="color:#ffffff">Order</strong></h2>
+          </div><br><br>
+          <div class="cart-form-text pay-details table-responsive text-center">
+            <table style="width:100%;" >
+              <thead style="border-radius:20px ;">
+                <tr>
+                  <th style="color:#ffffff;background:#6896BD;border-radius:20px 0 0 20px ;">Product</th>
+                  <td style="color:#ffffff;background:#6896BD;border-radius:0 20px 20px 0 ;">Total</td>
+                </tr>
+              </thead>
+              <tbody style="color:#ffffff;">
+                {% for cart_item in cart_items %}
+                <tr >
+                  <th>{{cart_item.product.name}} x {{cart_item.quantity}}</th>
+                  <td>${{cart_item.sub_total}}</td>
+                </tr>
+                {% endfor %}
+                <tr>
+                  <th>Shipping and Handing</th>
+                  <td>${{handing}}</td>
+                </tr>
+                <tr>
+                  <th>Vat</th>
+                  <td>${{vat}}</td>
+                </tr>
+                <tr style="color:#ffffff">
+                  <th>Order total</th>
+                  <td>${{order_total}}</td>
+                </tr>
+              </tbody>
+              <tfoot>
+              </tfoot>
+            </table>
+            <form method="post" action="{% url 'orders:payments' %}">
+              {{ form.as_p }}
+              <input type="hidden" name="order_id" value="{{ order.order_id }}">
+              {% csrf_token %}
+              <button type="submit">Submit</button>
+            </form>                  
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock content %}
+

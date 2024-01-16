@@ -1,0 +1,199 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Shop{% endblock %}
+{% block content %}
+
+<style>
+    .single-product {
+        height: 575px; /* Измените значение высоты по необходимости */
+    }
+</style>
+
+<!-- header section end -->
+        <!-- pages-title-start -->
+		<div style="background:#ffffff" class="pages-title section-padding">
+			<div class="container">
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="pages-title-text text-center">
+							{% if category_slug != None %}
+							<h2 style="color:#6896BD;">{{category_slug}}</h2>
+							{% else %}
+							<h2 style="color:#6896BD;">All Products</h2>
+							{% endif %}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<br>
+		<!-- pages-title-end -->
+        <!-- collection section start -->
+		
+		<!-- collection section end -->
+		<!-- product-grid-view content section start -->
+		<section style="background:#ffffff"   class="pages products-page section-padding-bottom">
+			<div class="container">
+				<div class="row"><br>
+					<div class="col-xs-12 col-sm-4 col-md-3">
+						<div class="sidebar left-sidebar">
+							<div style="background:#6896BD; color: #ffffff;;border-radius:20px 20px 0 0;" class="s-side-text">
+								<div class="sidebar-title clearfix text-center">
+									<h3 >Categories</h3>
+								</div>
+								<div  class="sidebar-title clearfix">
+									<h4 class="floatleft"><a style="font-weight:600;color:#ffffff"  href="{% url 'shop:shop' %}">All</a></h4>
+								</div>
+                                {% for category in categories %}
+                                <div  class="sidebar-title clearfix">
+									<h4 class="floatleft"><a style="font-weight:600;color:#ffffff"  href="{{ category.get_category_slug_url }}">{{category.name}}</a></h4>
+								</div>
+                                {% endfor %}
+							</div>
+							
+						</div>
+					</div>
+					<div class="col-xs-12 col-sm-8 col-md-9">
+						<div class="right-products">
+							<div class="row">
+								<div class="col-xs-12">
+									<div style="background:#6896BD;border-radius:10px;" class="section-title clearfix">
+										<ul >
+											<li>
+												<ul class="nav-view">
+													<li class="active"><a data-toggle="tab" href="#grid"> <i style="color: #ffffff" class="mdi mdi-view-module"></i> </a></li>
+													<li><a data-toggle="tab" href="#list"> <i style="color: #ffffff" class="mdi mdi-view-list"></i> </a></li>
+												</ul>
+											</li>
+											<li style="color: #ffffff; font-size:18px" class="sort-by floatright">
+												{{products_count}} Results
+											</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="tab-content grid-content" >
+									<div class="tab-pane fade in active text-center" id="grid">
+                                        {% for product in products %}
+										<div  class="col-xs-12 col-sm-6 col-md-4" >
+											<div   style="background:#6896BD; ;border-radius:15px;" class="single-product">
+												<div class="product-img">
+													{% if product.discount != 0.00 %}
+													<div style="background:#ffffff; color:#6896BD" class="pro-type">
+														<span>Discount</span>
+													</div>
+													{% endif %}
+													{% if product.new %}
+													<div style="background:#ffffff; color:#6896BD" class="pro-type">
+														<span background:#ffffff; style="color: #6896BD" >New</span>
+													</div>
+													{% endif %}
+													<a href="{{product.get_prodcut_details_url}}"><img style="width:100%; height:350px; border-radius:15px 15px 0 0;" src="{{product.image.url}}" alt="Product Title" /></a>
+													<div class="actions-btn">
+														<a style="margin-left:20px; color: #ffffff; background:#6896BD" href="{% url 'cart:add_cart' product.id %}"><i class="mdi mdi-cart"></i></a>
+														<a style="color: #ffffff; background:#6896BD;" href="{{product.get_prodcut_details_url}}"><i class="mdi mdi-eye"></i></a>
+														<a style="color: #ffffff; background:#6896BD;" href="{% url 'wishlist:add_to_wishlist' product.id %}"><i class="mdi mdi-heart"></i></a> 
+													</div>
+												</div>
+												<div class="product-dsc">
+													<p><a style="color: #ffffff;" href="{{product.get_prodcut_details_url}}">{{product.name}}</a></p>
+													<span style="color: #ffffff;">${{product.price}}</span><br><br>
+													<div style="font-size:16px; color: #ffffff;" class="rating-star">
+														<span>
+														<i class="fa fa-star{% if product.averageRating < 0.5 %}-o{% elif product.averageRating >= 0.5 and product.averageRating < 1 %}-half-o {% endif %}" aria-hidden="true"></i>
+														<i class="fa fa-star{% if product.averageRating < 1.5 %}-o{% elif product.averageRating >= 1.5 and product.averageRating < 2 %}-half-o {% endif %}" aria-hidden="true"></i>
+														<i class="fa fa-star{% if product.averageRating < 2.5 %}-o{% elif product.averageRating >= 2.5 and product.averageRating < 3 %}-half-o {% endif %}" aria-hidden="true"></i>
+														<i class="fa fa-star{% if product.averageRating < 3.5 %}-o{% elif product.averageRating >= 3.5 and product.averageRating < 4 %}-half-o {% endif %}" aria-hidden="true"></i>
+														<i class="fa fa-star{% if product.averageRating < 4.5 %}-o{% elif product.averageRating >= 4.5 and product.averageRating < 5 %}-half-o {% endif %}" aria-hidden="true"></i>
+														&nbsp;<span style="font-size:16px; color: #ffffff;">(<b>{{product.countReview}}</b> reviews)</span>
+														</span>
+													</div>
+												</div>
+											</div>
+										</div>
+										{% endfor %}
+									</div>
+									<div class="tab-pane fade in" id="list" >
+                                        {% for product in products %}
+										<div class="col-xs-12">
+											<div class="single-list-view">
+												<div style="width:100%; height:350px" class="row">
+													<div class="col-xs-12 col-md-4">
+														<div class="list-img">
+															<div class="product-img" >
+															{% if product.discount != 0.00 %}
+															<div class="pro-type" style="color: #ffffff; background:#6896BD;">
+																<span>Discount</span>
+															</div>
+															{% endif %}
+																<a href="{{product.get_prodcut_details_url}}"><img style="width:100%; height:350px; border-radius:20px 0 0 20px;" src="{{product.image.url}}" alt="Product Title" /></a>
+															</div>
+														</div>
+													</div>
+													<div class="col-xs-12 col-md-8">
+														<div style="height:350px; border-radius:0 20px 20px 0; background:#6896BD;"  class="list-text" >
+															<div style="font-size:16px" class="rating-star floatright">
+																<span>
+																<i class="fa fa-star{% if product.averageRating < 0.5 %}-o{% elif product.averageRating >= 0.5 and product.averageRating < 1 %}-half-o {% endif %}" aria-hidden="true"></i>
+																<i class="fa fa-star{% if product.averageRating < 1.5 %}-o{% elif product.averageRating >= 1.5 and product.averageRating < 2 %}-half-o {% endif %}" aria-hidden="true"></i>
+																<i class="fa fa-star{% if product.averageRating < 2.5 %}-o{% elif product.averageRating >= 2.5 and product.averageRating < 3 %}-half-o {% endif %}" aria-hidden="true"></i>
+																<i class="fa fa-star{% if product.averageRating < 3.5 %}-o{% elif product.averageRating >= 3.5 and product.averageRating < 4 %}-half-o {% endif %}" aria-hidden="true"></i>
+																<i class="fa fa-star{% if product.averageRating < 4.5 %}-o{% elif product.averageRating >= 4.5 and product.averageRating < 5 %}-half-o {% endif %}" aria-hidden="true"></i>
+																&nbsp;<span style="font-size:16px; color: #ffffff; background:#6896BD;">(<b>{{product.countReview}}</b> reviews)</span>
+																</span>
+															</div>
+															<h3 style="color: #ffffff">{{product.name}}</h3>
+															<h5 style="color: #ffffff">{% if product.discount != 0.00 %}<del style="color: #ffffff;">${{product.discount}}</del>{% endif %} ${{product.price}}</h5>
+															<p style="color: #ffffff">{{product.description}}.</p>
+															<div class="list-btn">
+																<a style="color: #6896BD; background:#ffffff;" href="{{product.get_prodcut_details_url}}" class="btn" >View Details <i class="mdi mdi-eye"></i></a>
+																<a style="color: #6896BD; background:#ffffff;" href="{% url 'cart:add_cart' product.id %}" class="btn ">add to cart <i class="mdi mdi-cart-outline"></i></a>
+																<a style="color: #6896BD; background:#ffffff;" href="{% url 'wishlist:add_to_wishlist' product.id %}"class="btn "><i class="mdi mdi-heart"></i></a>  
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											
+										</div>
+                                        {% endfor %}
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div  class="col-sm-12">
+									<div style="background:#ffffff" class="pagnation-ul">
+									{% if products.has_other_pages %}
+										<ul class="clearfix">
+											{% if products.has_previous %}
+											<li><a href="?page={{products.previous_page_number}}"><i style="color:#6896BD" class="mdi mdi-arrow-left-bold"></i></a></li>
+											{% else %}
+											<li><a href="#"><i class="mdi mdi-arrow-left-bold"></i></a></li>
+											{% endif %}
+											
+											{% for x in products.paginator.page_range %}
+												{% if products.number == x %}
+												<li ><a href="#">{{x}}</a></li>
+												{% else %}
+												<li><a  style="color:#6896BD" href="?page={{x}}">{{x}}</a></li>
+												{% endif %}
+											{% endfor %}
+											
+											{% if products.has_next %}
+											<li ><a href="?page={{products.next_page_number}}"><i style="color:#6896BD" class="mdi mdi-arrow-right-bold"></i></a></li>
+											{% else %}
+											<li><a  href="#"><i class="mdi mdi-arrow-right-bold"></i></a></li>
+											{% endif %}
+										</ul>
+									{% endif %}
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	
+{% endblock content %}

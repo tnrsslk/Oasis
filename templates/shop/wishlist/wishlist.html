@@ -1,0 +1,66 @@
+{% extends '../../base.html' %}
+{% load static %}
+{% block title %}Wishlist{% endblock title %}
+{% block content %}
+
+<div class="pages-title section-padding">
+    <div class="container">
+        <div style="background:#ffffff" class="row">
+            <div class="col-xs-12">
+                <div class="pages-title-text text-center">
+                    <h2 style="color:#6896BD">Wishlist</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="section-conten padding-y bg">
+    <br><br>
+    <div class="container-fluid">
+        <main style="background:#6896BD;border-radius:10px;padding:20px;box-sizing:border-box;margin:0 auto;max-width:calc(100% - 600px);">
+            <article class="card"><br>
+                <div class="table-responsive">
+                    <table class="table table-hover text-center">
+                        <thead>
+                            <tr>
+                                <th style="background:#6896BD;color:#ffffff;font-size:16px;border-radius:10px 0 0 0;"
+                                    scope="col">Product Image</th>
+                                <th style="background:#6896BD;color:#ffffff;font-size:16px" scope="col">Product Name</th>
+                                <th style="background:#6896BD;color:#ffffff;font-size:16px" scope="col">Price</th>
+                                <th style="background:#6896BD;color:#ffffff;font-size:16px; border-radius:0 10px 0 0 "
+                                    scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for wishlist_item in wishlist_items %}
+                            <tr class='hav'>
+                                <td style="background:#6896BD;font-size:16px" class="text-center" scope="row">
+                                    <img src="{{ wishlist_item.product.image.url }}" alt="{{ wishlist_item.product.name }}"
+                                        style="max-width: 100px; max-height: 100px;">
+                                </td>
+                                <td style="background:#6896BD;font-size:16px">
+                                    <a href="{{ wishlist_item.product.get_prodcut_details_url }}">{{ wishlist_item.product.name }}</a>
+                                </td>
+                                <td style="background:#6896BD;font-size:16px">
+                                    <a href="{{ wishlist_item.product.get_prodcut_details_url }}">${{ wishlist_item.product.price }}</a>
+                                </td>
+                                <td style="background:#6896BD;font-size:16px">
+                                    <a class="btn" style="background:#3e5a71; color:#000" href="{% url 'cart:add_cart' wishlist_item.product.id %}"><b>Add
+                                            to cart</b></a>
+                                    <a class="btn" style="background:#3e5a71; color:#ffffff"
+                                        href='{% url "wishlist:remove_from_wishlist" wishlist_item.id %}'><b>Remove</b></a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <br>
+            </article> <!-- order-group.// -->
+        </main>
+    </div>
+    <br>
+</section>
+
+{% endblock content %}
